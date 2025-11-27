@@ -1,0 +1,118 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "Admin",
+            "password": "AdminCihuy",
+            "role": "admin",
+            "balance": 150000000,
+            "cart": []
+        },
+        {
+            "id": 2,
+            "username": "sa",
+            "password": "sa",
+            "role": "customer",
+            "balance": 500000,
+            "cart": [
+                {
+                    "item_id": 3,
+                    "name": "Premium Grandstand",
+                    "price": 1000000,
+                    "quantity": 6,
+                    "type": "ticket"
+                },
+                {
+                    "item_id": 3,
+                    "name": "Hoodie dan Jaket MotoGP",
+                    "price": 500000,
+                    "quantity": 6,
+                    "type": "merchandise"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "username": "Angga Kakap",
+            "password": "Mas Amba",
+            "role": "customer",
+            "balance": 500000,
+            "cart": []
+        }
+    ],
+    "tickets": [
+        {
+            "id": 1,
+            "name": "General Admission",
+            "price": 115000,
+            "stock": 100,
+            "type": "General Admission"
+        },
+        {
+            "id": 2,
+            "name": "Standard Grandstand",
+            "price": 400000,
+            "stock": 100,
+            "type": "Standard Grandstand"
+        },
+        {
+            "id": 3,
+            "name": "Premium Grandstand",
+            "price": 1000000,
+            "stock": 100,
+            "type": "Premium Grandstand"
+        },
+        {
+            "id": 4,
+            "name": "VIP Hospitality Suites Deluxe",
+            "price": 10000000,
+            "stock": 100,
+            "type": "VIP Hospitality Suites Deluxe"
+        },
+        {
+            "id": 5,
+            "name": "VIP Hospitality Suite Premium",
+            "price": 12000000,
+            "stock": 100,
+            "type": "VIP Hospitality Suite Premium"
+        }
+    ],
+    "merchandise": [
+        {
+            "id": 1,
+            "name": "Jersey Driver dan Team",
+            "price": 300000,
+            "stock": 100,
+            "type": "Jersey"
+        },
+        {
+            "id": 2,
+            "name": "Topi (Caps)",
+            "price": 150000,
+            "stock": 100,
+            "type": "Topi"
+        },
+        {
+            "id": 3,
+            "name": "Hoodie dan Jaket MotoGP",
+            "price": 500000,
+            "stock": 100,
+            "type": "Hoodie"
+        },
+        {
+            "id": 4,
+            "name": "Key Chain",
+            "price": 25000,
+            "stock": 100,
+            "type": "Aksesoris"
+        },
+        {
+            "id": 5,
+            "name": "Merchandise Eksklusif",
+            "price": 2000000,
+            "stock": 100,
+            "type": "Eksklusif"
+        }
+    ],
+    "transactions": []
+}

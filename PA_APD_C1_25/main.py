@@ -1,6 +1,8 @@
+# main.py
 from auth import register, login
-from admin import show_all_users
-from customer import show_customer_menu
+from admin import admin_menu
+from customer import tampilan_menu_customer, lihat_tiket_merchandise, pesanan_tiket_merchandise, hapus_dari_keranjang
+from customer import pilih_opsi_selanjutnya, pilih_opsi_selanjutnya_p2, keranjang_customer, lihat_keranjang, update_keranjang
 from prettytable import PrettyTable
 
 def show_menu():
@@ -13,6 +15,7 @@ def show_menu():
     print(table)
 
 def show_login_menu():
+    print()
     table = PrettyTable()
     table.field_names = ["No", "Login Sebagai"]
     table.add_row(["1", "Admin"])
@@ -21,78 +24,185 @@ def show_login_menu():
     table.title = "Pilih Login"
     print(table)
 
+def input_aman(prompt):
+    while True:
+        value = input(prompt).strip()
+        if value == "":
+            print()
+            print("===| Pilihan Kosong, Silakan Coba Lagi! |===")
+            print()
+        else:
+            return value
+
 def main():
-    logged_in = False
-    user_role = None
+    Login = False
+    Role = None
+    current_username = None
 
     while True:
-        if not logged_in:
+        if not Login:
             show_menu()
-            choice = input("Pilih menu: ")
+            Pilihan = input_aman("Masukkan Pilihan Anda -> ")
 
-            if choice == '1':
-                username = input("Masukkan username: ")
-                password = input("Masukkan password: ")
+            if Pilihan == '1':
+                print()
+                print("===| Registrasi Pengguna Baru |===")
+                username = input_aman("Masukkan Username Anda: ")
+                password = input_aman("Masukkan Password Anda: ")
                 success, msg = register(username, password)
                 print(msg)
 
-            elif choice == '2':
+            elif Pilihan == '2':
                 while True:
                     show_login_menu()
-                    login_choice = input("Pilih login: ")
-                    if login_choice == '1':
+                    login_Pilihan = input("Masukkan Pilihan Anda -> ").strip()
+                    if login_Pilihan == "":
+                        print("===| Pilihan Kosong, Silakan Coba Lagi! |===")
+                        continue
+                    if login_Pilihan == '1':
                         role = "admin"
                         break
-                    elif login_choice == '2':
+                    elif login_Pilihan == '2':
                         role = "customer"
                         break
-                    elif login_choice == '3':
+                    elif login_Pilihan == '3':
+                        print()
+                        print("===| Kembali Ke Menu Utama |===")
                         break
                     else:
-                        print("Pilihan tidak valid.")
-                else:
+                        print()
+                        print("===| Pilihan Tidak Valid, Silakan Coba Lagi! |===")
+
+                if login_Pilihan == '3':
                     continue
 
-                username = input("Username: ")
-                password = input("Password: ")
-                success, msg, user_role = login(username, password)
-                if success and user_role == role:
+                print()
+                print(f"===| Login Sebagai {role.capitalize()} |===")
+                username = input_aman("Masukkan Username Anda: ")
+                password = input_aman("Masukkan Password Anda: ")
+                success, msg, Role = login(username, password)
+                if success and Role == role:
                     print(msg)
-                    logged_in = True
+                    Login = True
+                    current_username = username
                 else:
                     print(msg)
 
-            elif choice == '3':
-                print("Keluar dari program.")
+            elif Pilihan == '3':
+                print()
+                print("===| Terima Kasih Telah Menggunakan Official Store MotoGP! |===")
+                print()
                 break
-
             else:
-                print("Pilihan tidak valid.")
+                print()
+                print("===| Pilihan Tidak Valid, Silakan Coba Lagi! |===")
 
-        else:
-            if user_role == "admin":
-                print("\n=== Menu Admin ===")
-                print("1. Lihat Daftar Pengguna")
-                print("2. Logout")
-                admin_choice = input("Pilih menu: ")
-                if admin_choice == '1':
-                    show_all_users()
-                elif admin_choice == '2':
-                    logged_in = False
-                    user_role = None
-                    print("Berhasil logout.")
+        elif Login:
+            if Role == "admin":
+                admin_menu()
+                admin_Pilihan = input("Masukkan Pilihan Anda -> ").strip()
+                if admin_Pilihan == "":
+                    print("===| Pilihan Kosong, Silakan Coba Lagi! |===")
+                    continue
+                if admin_Pilihan == '9':
+                    print()
+                    print("===| Kembali Ke Menu Utama |===")
+                    Login = False
+                    Role = None
+                    continue
                 else:
-                    print("Pilihan tidak valid.")
+                    print()
+                    print("===| Pilihan Tidak Valid, Silakan Coba Lagi! |===")
 
-            elif user_role == "customer":
-                show_customer_menu()
-                customer_choice = input("Pilih menu: ")
-                if customer_choice == '4':
-                    logged_in = False
-                    user_role = None
-                    print("Berhasil logout.")
+            elif Role == "customer":
+                tampilan_menu_customer()
+                customer_Pilihan = input("Masukkan Pilihan Anda -> ").strip()
+                if customer_Pilihan == "":
+                    print()
+                    print("===| Pilihan Kosong, Silakan Coba Lagi! |===")
+                    continue
+                if customer_Pilihan == '1':
+                    print()
+                    lihat_tiket_merchandise()
+                    hasil = pilih_opsi_selanjutnya() 
+                    if hasil == "kembali":
+                        continue
+                elif customer_Pilihan == '2':
+                    while True:
+                        print()
+                        lihat_tiket_merchandise()
+                        pesanan_tiket_merchandise(current_username)  
+                        hasil = pilih_opsi_selanjutnya_p2() 
+                        if hasil == "kembali":
+                            break
+                        elif hasil == "lanjut":
+                            continue
+                elif customer_Pilihan == '3':  
+                    while True:
+                        keranjang_customer()
+                        pilih = input("Pilih menu keranjang -> ").strip()
+                        if pilih == '1':
+                            lihat_keranjang(current_username)
+                            # === Tambahkan opsi ubah/hapus setelah lihat keranjang ===
+                            print("\n===| Pilih Opsi Berikut |===")
+                            print("1. Ubah Jumlah Item")
+                            print("2. Hapus Item dari Keranjang")
+                            print("3. Kembali ke Menu Keranjang")
+                            while True:
+                                sub_pilih = input("Masukkan Pilihan Anda -> ").strip()
+                                if sub_pilih == '1':
+                                    try:
+                                        nomor = int(input("Masukkan nomor item: "))
+                                        jumlah_baru = int(input("Masukkan jumlah baru: "))
+                                        success, msg = update_jumlah_item_keranjang(current_username, nomor, jumlah_baru)
+                                        print()
+                                        print(msg)
+                                    except ValueError:
+                                        print()
+                                        print("❌ Input tidak valid!")
+                                elif sub_pilih == '2':
+                                    try:
+                                        nomor = int(input("Masukkan nomor item: "))
+                                        success, msg = hapus_dari_keranjang(current_username, nomor)
+                                        print()
+                                        print(msg)
+                                    except ValueError:
+                                        print()
+                                        print("❌ Input tidak valid!")
+                                elif sub_pilih == '3':
+                                    print()
+                                    print("===| Kembali ke Menu Keranjang |===")
+                                    break
+                                else:
+                                    print()
+                                    print("❌ Pilihan tidak valid!")
+                        elif pilih == '2':
+                            lihat_keranjang(current_username)
+                            try:
+                                nomor = int(input("Masukkan nomor item yang dihapus: "))
+                                success, msg = hapus_dari_keranjang(current_username, nomor)
+                                print()
+                                print(msg)
+                            except ValueError:
+                                print()
+                                print("❌ Input tidak valid!")
+                        elif pilih == '3':
+                            break  # Kembali ke menu customer
+                        else:
+                            print()
+                            print("❌ Pilihan tidak valid!")
+                elif customer_Pilihan == '4':
+                    print()
+                elif customer_Pilihan == '5':
+                    print()
+                elif customer_Pilihan == '6':
+                    print()
+                    print("===| Kembali Ke Menu Utama |===")
+                    Login = False
+                    Role = None
                 else:
-                    print("Fitur belum tersedia.")
+                    print()
+                    print("===| Pilihan Tidak Valid, Silakan Coba Lagi! |===")
 
 if __name__ == "__main__":
     main()
