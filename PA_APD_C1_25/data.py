@@ -15,7 +15,7 @@ def load_data():
                 {"id": 2, "name": "Standard Grandstand", "price": 400000, "stock": 100, "type": "Standard Grandstand"},
                 {"id": 3, "name": "Premium Grandstand", "price": 1000000, "stock": 100, "type": "Premium Grandstand"},
                 {"id": 4, "name": "VIP Hospitality Suites Deluxe", "price": 10000000, "stock": 100, "type": "VIP Hospitality Suites Deluxe"},
-                {"id": 5, "name": "VIP Hospitality Suite Premium", "price": 12000000, "stock": 100, "type": "VIP Hospitality Suite Premium"}
+                {"id": 5, "name": "VIP Hospitality Suites Premium", "price": 12000000, "stock": 100, "type": "VIP Hospitality Suite Premium"}
             ],
             "merchandise": [
                 {"id": 1, "name": "Jersey Driver dan Team", "price": 300000, "stock": 100, "type": "Jersey"},
@@ -44,7 +44,7 @@ def load_data():
                 {"id": 2, "name": "Standard Grandstand", "price": 400000, "stock": 100, "type": "Standard Grandstand"},
                 {"id": 3, "name": "Premium Grandstand", "price": 1000000, "stock": 100, "type": "Premium Grandstand"},
                 {"id": 4, "name": "VIP Hospitality Suites Deluxe", "price": 10000000, "stock": 100, "type": "VIP Hospitality Suites Deluxe"},
-                {"id": 5, "name": "VIP Hospitality Suite Premium", "price": 12000000, "stock": 100, "type": "VIP Hospitality Suite Premium"}
+                {"id": 5, "name": "VIP Hospitality Suites Premium", "price": 12000000, "stock": 100, "type": "VIP Hospitality Suite Premium"}
             ],
             "merchandise": [
                 {"id": 1, "name": "Jersey Driver dan Team", "price": 300000, "stock": 100, "type": "Jersey"},
@@ -102,69 +102,3 @@ def update_user(user):
             data["users"][i] = user
             break
     save_data(data)
-
-def add_ticket(name, price, stock, ticket_type):
-    """Menambahkan tiket baru"""
-    data = load_data()
-    new_id = get_next_id("tickets")
-    new_ticket = {
-        "id": new_id,
-        "name": name,
-        "price": price,
-        "stock": stock,
-        "type": ticket_type
-    }
-    data["tickets"].append(new_ticket)
-    save_data(data)
-    return new_ticket
-
-def add_merchandise(name, price, stock, merchandise_type):
-    """Menambahkan merchandise baru"""
-    data = load_data()
-    new_id = get_next_id("merchandise")
-    new_item = {
-        "id": new_id,
-        "name": name,
-        "price": price,
-        "stock": stock,
-        "type": merchandise_type
-    }
-    data["merchandise"].append(new_item)
-    save_data(data)
-    return new_item
-
-def add_transaction(user_id, items, total_amount):
-    """Menambahkan transaksi baru"""
-    data = load_data()
-    new_id = get_next_id("transactions")
-    new_transaction = {
-        "id": new_id,
-        "user_id": user_id,
-        "items": items,
-        "total_amount": total_amount,
-        "status": "completed"
-    }
-    data["transactions"].append(new_transaction)
-    save_data(data)
-    return new_transaction
-
-def get_all_tickets():
-    """Mendapatkan semua tiket"""
-    return load_data()["tickets"]
-
-def get_all_merchandise():
-    """Mendapatkan semua merchandise"""
-    return load_data()["merchandise"]
-
-def get_user_transactions(user_id):
-    """Mendapatkan transaksi berdasarkan user_id"""
-    data = load_data()
-    return [t for t in data["transactions"] if t["user_id"] == user_id]
-
-def get_all_users():
-    """Mendapatkan semua users"""
-    return load_data()["users"]
-
-def get_all_transactions():
-    """Mendapatkan semua transaksi"""
-    return load_data()["transactions"]
