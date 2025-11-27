@@ -2,17 +2,14 @@ from tabulate import tabulate
 import os
 
 def clear_screen():
-    """Membersihkan layar konsol"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def print_header(text):
-    """Mencetak header dengan garis"""
     print("=" * 50)
     print(f"{text:^50}")
     print("=" * 50)
 
 def get_valid_input(prompt, validation_func, error_msg):
-    """Mendapatkan input yang valid dari user"""
     while True:
         user_input = input(prompt)
         if validation_func(user_input):
@@ -20,14 +17,12 @@ def get_valid_input(prompt, validation_func, error_msg):
         print(error_msg)
 
 def print_table(data, headers):
-    """Mencetak tabel menggunakan tabulate"""
     if not data:
         print("Tidak ada data untuk ditampilkan")
         return
     print(tabulate(data, headers=headers, tablefmt="grid", stralign="center"))
 
 def input_integer(prompt, min_val=None, max_val=None):
-    """Input integer dengan validasi"""
     while True:
         try:
             value = int(input(prompt))
@@ -42,7 +37,6 @@ def input_integer(prompt, min_val=None, max_val=None):
             print("Input harus berupa angka")
 
 def input_float(prompt, min_val=None, max_val=None):
-    """Input float dengan validasi"""
     while True:
         try:
             value = float(input(prompt))
@@ -54,5 +48,4 @@ def input_float(prompt, min_val=None, max_val=None):
             print("Input harus berupa angka")
 
 def pause():
-    """Pause untuk menunggu input user"""
     input("\nTekan Enter untuk melanjutkan...")

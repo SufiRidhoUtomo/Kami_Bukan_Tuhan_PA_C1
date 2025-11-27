@@ -1,14 +1,7 @@
-# from auth import load_users
-# from prettytable import PrettyTable
-
-# def get_all_users():
-#     users = load_users()
-#     return users
-
-# admin.py
 import json
 import os
 from prettytable import PrettyTable
+from auth import clear
 
 Simpan_Data = "data.json"
 
@@ -28,6 +21,7 @@ def save_data(data):
         json.dump(data, f, indent=4, ensure_ascii=False)
 
 def admin_menu():
+    clear()
     table = PrettyTable()
     table.field_names = ["No", "Menu Admin"]
     table.add_row(["1", "Tambah Tiket/Merchandise"])
@@ -55,12 +49,12 @@ def _tampilkan_daftar(items, kategori):
             item["stock"],
             f"Rp{item['price']:,}"
         ])
-    print(f"\n========== DAFTAR {kategori.upper()} ==========")
+    print(f"DAFTAR {kategori.upper()}")
     print(table)
 
 def tambah_stok():
     data = load_data()
-    print("\n[1] Tiket")
+    print("[1] Tiket")
     print("[2] Merchandise")
     pilih = input("Pilih kategori: ").strip()
 
@@ -71,7 +65,7 @@ def tambah_stok():
         items = data["merchandise"]
         kategori = "merchandise"
     else:
-        print("❌ Pilihan tidak valid!")
+        print("Pilihan tidak valid!")
         return
 
     _tampilkan_daftar(items, kategori)
@@ -80,24 +74,24 @@ def tambah_stok():
         item_id = int(input(f"\nMasukkan ID {kategori} yang akan ditambah stoknya: "))
         item = next((x for x in items if x["id"] == item_id), None)
         if not item:
-            print(f"❌ {kategori.capitalize()} dengan ID tersebut tidak ditemukan!")
+            print(f"{kategori.capitalize()} dengan ID tersebut tidak ditemukan!")
             return
 
         tambah = int(input("Jumlah stok yang ditambahkan: "))
         if tambah <= 0:
-            print("❌ Jumlah harus lebih dari 0!")
+            print("Jumlah harus lebih dari 0!")
             return
 
         item["stock"] += tambah
         save_data(data)
-        print(f"✅ Stok '{item['name']}' berhasil ditambah menjadi {item['stock']}.")
+        print(f"Stok '{item['name']}' berhasil ditambah menjadi {item['stock']}.")
 
     except ValueError:
-        print("❌ Input tidak valid!")
+        print("Input tidak valid!")
 
 def kurangi_stok():
     data = load_data()
-    print("\n[1] Tiket")
+    print("[1] Tiket")
     print("[2] Merchandise")
     pilih = input("Pilih kategori: ").strip()
 
@@ -108,71 +102,71 @@ def kurangi_stok():
         items = data["merchandise"]
         kategori = "merchandise"
     else:
-        print("❌ Pilihan tidak valid!")
+        print("Pilihan tidak valid!")
         return
 
     _tampilkan_daftar(items, kategori)
 
     try:
-        item_id = int(input(f"\nID {kategori} yang diambil: "))
+        item_id = int(input(f"ID {kategori} yang diambil: "))
         item = next((x for x in items if x["id"] == item_id), None)
         if not item:
-            print("❌ Barang tidak ditemukan!")
+            print("Barang tidak ditemukan!")
             return
 
         jumlah = int(input("Jumlah yang diambil: "))
         if jumlah <= 0 or jumlah > item["stock"]:
-            print("❌ Jumlah tidak valid atau melebihi stok!")
+            print("Jumlah tidak valid atau melebihi stok!")
             return
 
         item["stock"] -= jumlah
         save_data(data)
-        print(f"✅ Stok '{item['name']}' sekarang: {item['stock']}")
+        print(f"Stok '{item['name']}' sekarang: {item['stock']}")
 
     except ValueError:
-        print("❌ Input tidak valid!")
+        print("Input tidak valid!")
 
 def lihat_barang():
     data = load_data()
-    print("\n" + "="*60)
+    print("" + "="*60)
 
     if data["tickets"]:
         table_tiket = PrettyTable()
         table_tiket.field_names = ["ID", "Nama Tiket", "Stok", "Harga"]
         for t in data["tickets"]:
             table_tiket.add_row([t["id"], t["name"], t["stock"], f"Rp{t['price']:,}"])
-        print("\n🎫 TIKET MOTOGP")
+        print("TIKET MOTOGP")
         print(table_tiket)
     else:
-        print("\n🎫 TIKET: Belum ada data.")
+        print("TIKET: Belum ada data.")
 
     if data["merchandise"]:
         table_merch = PrettyTable()
         table_merch.field_names = ["ID", "Nama Merchandise", "Stok", "Harga"]
         for m in data["merchandise"]:
             table_merch.add_row([m["id"], m["name"], m["stock"], f"Rp{m['price']:,}"])
-        print("\n🛍️ MERCHANDISE")
+        print("MERCHANDISE")
         print(table_merch)
     else:
-        print("\n🛍️ MERCHANDISE: Belum ada data.")
+        print("MERCHANDISE: Belum ada data.")
 
 def lihat_customer():
     data = load_data()
     if not data["users"]:
-        print("\n👥 Belum ada customer terdaftar.")
+        print("Belum ada customer terdaftar.")
         return
 
     table = PrettyTable()
     table.field_names = ["ID", "Username", "Role", "Saldo"]
     for u in data["users"]:
         table.add_row([u["id"], u["username"], u["role"], f"Rp{u['balance']:,}"])
-    print("\n👥 DAFTAR PENGGUNA")
+    print("DAFTAR PENGGUNA")
     print(table)
 
 def lihat_transaksi():
     data = load_data()
     if not data["transactions"]:
-        print("\n🧾 Belum ada transaksi.")
+        print("Belum ada transaksi.")
         return
 
     table = PrettyTable()
@@ -186,5 +180,5 @@ def lihat_transaksi():
             f"Rp{t['total_harga']:,}",
             t["tipe"]
         ])
-    print("\n🧾 RIWAYAT TRANSAKSI")
+    print("RIWAYAT TRANSAKSI")
     print(table)

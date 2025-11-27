@@ -1,41 +1,46 @@
-# auth.py
 import json
 import os
-os.system("cls")
 
-Simpan_Data = "users.json"
+def clear():
+    os.system("cls" if os.name == "nt" else "clear")
 
-def load_users():
+Simpan_Data = "data.json"
+
+def load_data():
     if not os.path.exists(Simpan_Data):
-        with open(Simpan_Data, "w") as f:
-            json.dump({"users": {}}, f)
-    with open(Simpan_Data, "r") as f:
-        return json.load(f)["users"]
+        print(f"File '{Simpan_Data}' tidak ditemukan. Membuat file baru...")
+        default_data = {
+            "users": {},
+            "tickets": [],
+            "merchandise": [],
+            "orders": [],
+            "balances": {}
+        }
+        save_data(default_data)
+    with open(Simpan_Data, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-def save_users(users_dict):
-    with open(Simpan_Data, "w") as f:
-        json.dump({"users": users_dict}, f)
+def save_data(data):
+    with open(Simpan_Data, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
 
 def register(username, password):
-    users = load_users()
-    if username in users:
-        print()
+    data = load_data()
+    if username in data["users"]:
         return False, "===| Username Telah Digunakan, Silakan Coba Lagi! |==="
-    users[username] = {"password": password, "role": "customer"}
-    save_users(users)
-    print()
+    
+    data["users"][username] = {
+        "password": password,
+        "role": "customer",
+        "cart": []
+    }
+    save_data(data)
     return True, "===| Berhasil Registrasi! |==="
 
 def login(username, password):
-    users = load_users()
-    if username in users:
-        user_data = users[username]
-        if user_data["password"] == password:
-            print()
-            return True, f"===| Login Sebagai {user_data['role']} |===", user_data["role"]
-        else:
-            print()
-            return False, "===| Username atau Password Salah, Silahkan Coba lagi! |===", None
-    else:
-        print()
-        return False, "===| Username atau Password Salah, Silahkan Coba lagi! |===", None
+    data = load_data()  
+    if username in data["users"]:
+        user = data["users"][username]
+        if user["password"] == password:
+            return True, f"===| Login Berhasil |===", user["role"] 
+    return False, "===| Gagal Login! |===", None
